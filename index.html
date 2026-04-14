@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EC Operations Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0c0c0c;--surface:#141414;--surface2:#1a1a1a;--border:#222;--border2:#2e2e2e;
+  --white:#fff;--muted:#555;--accent:#C8A800;--text:#d8d4cc;
+  --red:#D94A00;--green:#5aaa5a;--blue:#4a90d9;--purple:#9b59b6;
+  --font:'Nunito',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-weight:300;-webkit-font-smoothing:antialiased;}
+input,select,textarea,button{font-family:var(--font);}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;}
+.wordmark .name{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--white);font-weight:700;}
+.wordmark .sub{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.wordmark{padding-left:.6rem;border-left:1px solid var(--border2);}
+.nav-clock{text-align:right;}
+.clock-time{font-size:1.4rem;font-weight:200;color:var(--white);letter-spacing:.05em;line-height:1;}
+.clock-date{font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.nav-tabs{display:flex;gap:0;}
+.tab-btn{font-family:var(--font);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:.5rem 1.2rem;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--muted);cursor:pointer;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-btn:hover{color:var(--white);}
+
+/* PAGES */
+.page{display:none;padding:1.5rem 2rem;}
+.page.active{display:block;}
+
+/* SECTION */
+.section-title{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+
+/* STATS ROW */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:1.5rem;}
+.stat{background:var(--surface);padding:1rem 1.2rem;}
+.stat-value{font-size:1.8rem;font-weight:200;color:var(--white);line-height:1;}
+.stat-label{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.stat-red{border-left:2px solid var(--red);}
+.stat-yellow{border-left:2px solid var(--accent);}
+.stat-green{border-left:2px solid var(--green);}
+.stat-blue{border-left:2px solid var(--blue);}
+
+/* FILTERS */
+.filters{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap;}
+.filter-btn{font-family:var(--font);font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;padding:.25rem .7rem;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* TODO ITEMS */
+.todo-item{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 1rem;background:var(--surface);border:1px solid var(--border2);margin-bottom:1px;cursor:pointer;transition:border-color .15s;}
+.todo-item:hover{border-color:var(--accent);}
+.todo-item.done{opacity:.4;}
+.todo-item.done .todo-title{text-decoration:line-through;}
+.checkbox{width:15px;height:15px;border:1.5px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#000;}
+.todo-item.done .checkbox{background:var(--green);border-color:var(--green);}
+.todo-content{flex:1;}
+.todo-title{font-size:.82rem;color:var(--white);font-weight:600;margin-bottom:2px;}
+.todo-desc{font-size:.72rem;color:var(--muted);line-height:1.5;}
+.todo-meta{display:flex;gap:.4rem;margin-top:.3rem;flex-wrap:wrap;align-items:center;}
+.badge{font-size:.4rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:2px 5px;border:1px solid;}
+.badge-red{border-color:#7a2000;color:var(--red);}
+.badge-yellow{border-color:#7a6000;color:var(--accent);}
+.badge-green{border-color:#3a7a3a;color:var(--green);}
+.badge-blue{border-color:#2a5a9a;color:var(--blue);}
+.badge-grey{border-color:var(--border2);color:var(--muted);}
+
+/* ADD TODO */
+.add-form{background:var(--surface);border:1px solid var(--border2);padding:1rem;margin-bottom:1rem;display:grid;grid-template-columns:1fr 1fr auto auto;gap:.5rem;align-items:end;}
+.add-form input,.add-form select{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--white);font-size:.8rem;padding:.3rem 0;outline:none;width:100%;}
+.add-form input::placeholder{color:var(--muted);}
+.add-form select option{background:var(--surface);}
+.btn{font-family:var(--font);font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;padding:.4rem 1rem;border:1px solid;cursor:pointer;background:transparent;}
+.btn-primary{border-color:var(--accent);color:var(--accent);}
+.btn-primary:hover{background:var(--accent);color:#000;}
+.btn-danger{border-color:#7a2000;color:var(--red);}
+.btn-danger:hover{background:var(--red);color:#000;}
+.btn-green{border-color:#3a7a3a;color:var(--green);}
+.btn-green:hover{background:var(--green);color:#000;}
+
+/* ZEITERFASSUNG */
+.timer-card{background:var(--surface);border:1px solid var(--border2);padding:1.5rem;margin-bottom:1rem;}
+.timer-display{font-size:3rem;font-weight:200;color:var(--white);letter-spacing:.1em;text-align:center;margin:1rem 0;}
+.timer-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;}
+.timer-inputs{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem;}
+.input-group{display:flex;flex-direction:column;gap:3px;}
+.input-label{font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+.input-field{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--white);font-size:.85rem;padding:.3rem 0;outline:none;width:100%;}
+.input-field::placeholder{color:var(--muted);}
+.input-field option{background:var(--surface);}
+
+/* MANUAL ENTRY */
+.manual-form{background:var(--surface);border:1px solid var(--border2);padding:1rem;margin-bottom:1rem;}
+.manual-grid{display:grid;grid-template-columns:1fr 1fr 1fr 80px 80px auto;gap:.6rem;align-items:end;}
+
+/* EINTRAEGE */
+.entry-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;background:var(--surface);border:1px solid var(--border2);margin-bottom:1px;}
+.entry-left{display:flex;gap:1rem;align-items:center;}
+.entry-kunde{font-size:.45rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:2px 6px;border:1px solid;}
+.entry-task{font-size:.82rem;color:var(--white);}
+.entry-time{font-size:.75rem;color:var(--muted);margin-top:2px;}
+.entry-right{display:flex;gap:1rem;align-items:center;}
+.entry-dauer{font-size:1rem;font-weight:200;color:var(--white);}
+.entry-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;}
+.entry-del:hover{color:var(--red);}
+
+/* KUNDEN KACHELN */
+.kunden-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);margin-bottom:1.5rem;}
+.kunden-kachel{background:var(--surface);padding:1.2rem;border-left:3px solid transparent;}
+.kachel-name{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.5rem;}
+.kachel-time{font-size:1.6rem;font-weight:200;color:var(--white);line-height:1;}
+.kachel-entries{font-size:.65rem;color:var(--muted);margin-top:2px;}
+
+/* AUSWERTUNG */
+.auswertung-table{width:100%;border-collapse:collapse;}
+.auswertung-table th{font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:.4rem .8rem;border-bottom:1px solid var(--border2);text-align:left;}
+.auswertung-table td{font-size:.8rem;color:var(--text);padding:.5rem .8rem;border-bottom:1px solid var(--border);}
+.auswertung-table tr:last-child td{border-bottom:none;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 14" fill="#ffffff" width="16" height="32">
+      <rect x="0" y="0" width="7" height="2"/>
+      <path d="M0,6 H7 V8 H2 V12 H7 V14 H0 Z"/>
+    </svg>
+    <div class="wordmark">
+      <div class="name">Essentials Concept</div>
+      <div class="sub">Operations</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showPage('todos')">Open Items</button>
+    <button class="tab-btn" onclick="showPage('zeit')">Zeiterfassung</button>
+    <button class="tab-btn" onclick="showPage('auswertung')">Auswertung</button>
+  </div>
+  <div class="nav-clock">
+    <div class="clock-time" id="clock">00:00:00</div>
+    <div class="clock-date" id="clockdate"></div>
+  </div>
+</nav>
+
+<!-- PAGE: TODOS -->
+<div class="page active" id="page-todos">
+  <div class="stats">
+    <div class="stat stat-red"><div class="stat-value" id="cnt-sofort">0</div><div class="stat-label">Sofort</div></div>
+    <div class="stat stat-yellow"><div class="stat-value" id="cnt-woche">0</div><div class="stat-label">Diese Woche</div></div>
+    <div class="stat stat-blue"><div class="stat-value" id="cnt-offen">0</div><div class="stat-label">Offen gesamt</div></div>
+    <div class="stat stat-green"><div class="stat-value" id="cnt-done">0</div><div class="stat-label">Erledigt</div></div>
+  </div>
+
+  <div class="add-form">
+    <input id="new-title" placeholder="Neue Aufgabe...">
+    <input id="new-desc" placeholder="Details (optional)">
+    <select id="new-prio">
+      <option value="sofort">🔴 Sofort</option>
+      <option value="diese-woche" selected>🟡 Diese Woche</option>
+      <option value="mittelfristig">🔵 Mittelfristig</option>
+      <option value="geparkt">⚫ Geparkt</option>
+      <option value="warten">⏳ Warten</option>
+    </select>
+    <select id="new-tag">
+      <option value="Aesthetic Skin">Aesthetic Skin</option>
+      <option value="Novogenia">Novogenia</option>
+      <option value="Essentials">Essentials</option>
+      <option value="Privat">Privat</option>
+      <option value="System">System</option>
+      <option value="Finanzen">Finanzen</option>
+    </select>
+    <button class="btn btn-primary" onclick="addTodo()">+ Hinzufügen</button>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">Alle</button>
+    <button class="filter-btn" onclick="setFilter('sofort',this)">Sofort</button>
+    <button class="filter-btn" onclick="setFilter('diese-woche',this)">Diese Woche</button>
+    <button class="filter-btn" onclick="setFilter('mittelfristig',this)">Mittelfristig</button>
+    <button class="filter-btn" onclick="setFilter('geparkt',this)">Geparkt</button>
+    <button class="filter-btn" onclick="setFilter('warten',this)">Warten</button>
+    <button class="filter-btn" onclick="setFilter('done',this)">Erledigt</button>
+  </div>
+
+  <div id="todo-list"></div>
+</div>
+
+<!-- PAGE: ZEITERFASSUNG -->
+<div class="page" id="page-zeit">
+  <div class="section-title">Live Timer</div>
+  <div class="timer-card">
+    <div class="timer-inputs">
+      <div class="input-group">
+        <label class="input-label">Kunde / Kategorie</label>
+        <select class="input-field" id="timer-kunde">
+          <option value="">Bitte wählen...</option>
+          <option value="Aesthetic Skin">Aesthetic Skin</option>
+          <option value="Novogenia">Novogenia</option>
+          <option value="Wolf GmbH">Wolf GmbH</option>
+          <option value="Joseph Hehenwarter">Joseph Hehenwarter</option>
+          <option value="Essentials Concept">Essentials Concept</option>
+          <option value="Privat">Privat</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Aufgabe</label>
+        <input class="input-field" id="timer-task" placeholder="Was wird gemacht?">
+      </div>
+    </div>
+    <div class="input-group" style="margin-bottom:1rem;">
+      <label class="input-label">Ergebnis / Notiz</label>
+      <input class="input-field" id="timer-note" placeholder="Ergebnis oder kurze Notiz...">
+    </div>
+    <div class="timer-display" id="timer-display">00:00:00</div>
+    <div class="timer-controls">
+      <button class="btn btn-green" id="btn-start" onclick="startTimer()">▶ Start</button>
+      <button class="btn btn-primary" id="btn-stop" onclick="stopTimer()" disabled>■ Stop & Speichern</button>
+      <button class="btn btn-danger" onclick="resetTimer()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="section-title">Manuell erfassen</div>
+  <div class="manual-form">
+    <div class="manual-grid">
+      <div class="input-group">
+        <label class="input-label">Datum</label>
+        <input class="input-field" id="man-date" type="date">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Kunde</label>
+        <select class="input-field" id="man-kunde">
+          <option value="Aesthetic Skin">Aesthetic Skin</option>
+          <option value="Novogenia">Novogenia</option>
+          <option value="Wolf GmbH">Wolf GmbH</option>
+          <option value="Joseph Hehenwarter">Joseph Hehenwarter</option>
+          <option value="Essentials Concept">Essentials Concept</option>
+          <option value="Privat">Privat</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Aufgabe</label>
+        <input class="input-field" id="man-task" placeholder="Aufgabe...">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Stunden</label>
+        <input class="input-field" id="man-h" type="number" min="0" max="24" placeholder="0">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Minuten</label>
+        <input class="input-field" id="man-m" type="number" min="0" max="59" placeholder="0">
+      </div>
+      <button class="btn btn-primary" onclick="addManual()" style="align-self:flex-end;">+ Hinzufügen</button>
+    </div>
+    <div class="input-group" style="margin-top:.5rem;">
+      <label class="input-label">Ergebnis / Notiz</label>
+      <input class="input-field" id="man-note" placeholder="Ergebnis oder Notiz...">
+    </div>
+  </div>
+
+  <div class="section-title">Heute</div>
+  <div class="kunden-grid" id="kunden-today"></div>
+  <div id="entries-today"></div>
+</div>
+
+<!-- PAGE: AUSWERTUNG -->
+<div class="page" id="page-auswertung">
+  <div class="stats" id="auswertung-stats"></div>
+  <div class="section-title">Filter</div>
+  <div class="filters" style="margin-bottom:1.5rem;">
+    <button class="filter-btn active" onclick="setAuswertung('today',this)">Heute</button>
+    <button class="filter-btn" onclick="setAuswertung('week',this)">Diese Woche</button>
+    <button class="filter-btn" onclick="setAuswertung('month',this)">Dieser Monat</button>
+    <button class="filter-btn" onclick="setAuswertung('all',this)">Alles</button>
+  </div>
+  <div class="section-title">Alle Einträge</div>
+  <table class="auswertung-table">
+    <thead><tr><th>Datum</th><th>Kunde</th><th>Aufgabe</th><th>Dauer</th><th>Notiz</th><th></th></tr></thead>
+    <tbody id="auswertung-table"></tbody>
+  </table>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const STORAGE_TODOS = 'ec_todos_v2';
+const STORAGE_ENTRIES = 'ec_entries_v2';
+
+function loadTodos() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_TODOS)) || getDefaultTodos(); }
+  catch(e) { return getDefaultTodos(); }
+}
+function saveTodos(todos) { localStorage.setItem(STORAGE_TODOS, JSON.stringify(todos)); }
+function loadEntries() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_ENTRIES)) || []; }
+  catch(e) { return []; }
+}
+function saveEntries(e) { localStorage.setItem(STORAGE_ENTRIES, JSON.stringify(e)); }
+
+function getDefaultTodos() {
+  return [
+    {id:1,title:"Caro auf Slack — Meta Ads Spend",desc:"Warum kein Spend seit 31.03.? Halber Monat verloren.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+    {id:2,title:"Felix Freigabe — Stellenanzeigen schalten",desc:"Hochkant-Varianten fertig → €500 Budget Woche 1 bestätigen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+    {id:3,title:"Healthflow-Links → Beauty Agents",desc:"Zeitkritisch: Marlena noch ~6 Wochen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+    {id:4,title:"Werkstudent-Anzeige fixen",desc:"Nicht in Google Jobs sichtbar — günstige Alternative suchen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+    {id:5,title:"CrayAds Drehtag koordinieren",desc:"Nächste Woche — intern kommunizieren.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+    {id:6,title:"admin@ Mailbox für Sophie freischalten",desc:"M365 Admin → Shared Mailboxes → k.dueh@ als Mitglied.",prio:"diese-woche",tag:"System",done:false},
+    {id:7,title:"Office/Offic einrichten",desc:"Diese Woche angehen.",prio:"diese-woche",tag:"Aesthetic Skin",done:false},
+    {id:8,title:"Adobe März (€19,99)",desc:"Manuell aus account.adobe.com ziehen.",prio:"diese-woche",tag:"Finanzen",done:false},
+    {id:9,title:"Mail Wachsmann (Commerzbank)",desc:"Noch offen.",prio:"diese-woche",tag:"Finanzen",done:false},
+    {id:10,title:"Mail Michael Schalk — Visitenkarten Kathleen",desc:"Bestellen für Kathleen.",prio:"diese-woche",tag:"Aesthetic Skin",done:false},
+    {id:11,title:"Novogenia Website Text — Versicherungen",desc:"Variante wählen und freigeben.",prio:"diese-woche",tag:"Novogenia",done:false},
+    {id:12,title:"Vorsorge-Termin mit Kathleen planen",desc:"5 Dokumente drucken, durchgehen, unterschreiben.",prio:"diese-woche",tag:"Privat",done:false},
+    {id:13,title:"StepStone Abo entscheiden",desc:"€149/Monat, 3 Daueranzeigen. Mit Kathleen abstimmen.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+    {id:14,title:"Employer Value Proposition mit Kathleen",desc:"1h Session: Warum bei Aesthetic Skin arbeiten?",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+    {id:15,title:"Karriereseite aufbauen",desc:"Ziel Mai 2026.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+    {id:16,title:"Kathleen: Input für Dr. Platon Seite",desc:"Behandlungsablauf liefern.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+    {id:17,title:"Video-Testimonials starten",desc:"Start: Lea Doppler. Auch für CrayAds nutzbar.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+    {id:18,title:"Notar kontaktieren (Testament)",desc:"notarkammer-bayern.de — Berliner Testament + GmbH.",prio:"mittelfristig",tag:"Privat",done:false},
+    {id:19,title:"Bankvollmacht Münchner Bank",desc:"Filialtermin — beide müssen anwesend sein.",prio:"mittelfristig",tag:"Privat",done:false},
+    {id:20,title:"Browser Relay Extension prüfen",desc:"Extension verbindet sich nicht.",prio:"geparkt",tag:"System",done:false},
+    {id:21,title:"n8n Neuinstallation",desc:"Kein konkretes Datum.",prio:"geparkt",tag:"System",done:false},
+    {id:22,title:"HeyGen + Aesthetic Skin Videos",desc:"Erst Kathleens Zustimmung + GUARD AVV-Freigabe.",prio:"geparkt",tag:"Aesthetic Skin",done:false},
+    {id:23,title:"Mac mini #2 — Lokaler KI-Server",desc:"Wenn Novogenia-Partnerschaft konkret. ~€1.449.",prio:"geparkt",tag:"Novogenia",done:false},
+    {id:24,title:"Google Ads Monitoring Aesthetic Skin",desc:"Wartet auf Karstens Signal.",prio:"geparkt",tag:"Aesthetic Skin",done:false},
+    {id:25,title:"Plus Docs Januar (€25)",desc:"Angeschrieben, warten auf Antwort.",prio:"warten",tag:"Finanzen",done:false},
+    {id:26,title:"Enzyme Februar (€5,30)",desc:"Angeschrieben, warten auf Antwort.",prio:"warten",tag:"Finanzen",done:false},
+    {id:27,title:"Nils — abwarten",desc:"Auf Rückmeldung warten.",prio:"warten",tag:"Aesthetic Skin",done:false},
+    {id:28,title:"Martin — Heyflow-Konzept abwarten",desc:"Konzept → dann Daniel zur Umsetzung.",prio:"warten",tag:"Aesthetic Skin",done:false},
+  ];
+}
+
+let todos = loadTodos();
+let entries = loadEntries();
+let currentFilter = 'all';
+let auswertungFilter = 'today';
+
+// ── CLOCK ─────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('de-DE');
+  const days = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  document.getElementById('clockdate').textContent = `${days[now.getDay()]} · ${now.toLocaleDateString('de-DE')}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  event.target.classList.add('active');
+  if(name==='auswertung') renderAuswertung();
+  if(name==='zeit') renderToday();
+}
+
+// ── TODOS ─────────────────────────────────────────────────────────
+const prioConfig = {
+  sofort: {label:'Sofort', cls:'badge-red'},
+  'diese-woche': {label:'Diese Woche', cls:'badge-yellow'},
+  mittelfristig: {label:'Mittelfristig', cls:'badge-blue'},
+  geparkt: {label:'Geparkt', cls:'badge-grey'},
+  warten: {label:'Warten', cls:'badge-grey'},
+};
+const kundeColors = {
+  'Aesthetic Skin':'#e8b4b8','Novogenia':'#83A5A0','Wolf GmbH':'#E86400',
+  'Essentials':'#C8A800','Privat':'#9b59b6','System':'#4a90d9','Finanzen':'#5aaa5a','Default':'#555'
+};
+
+function renderTodos() {
+  const list = document.getElementById('todo-list');
+  let filtered = todos;
+  if(currentFilter === 'done') filtered = todos.filter(t=>t.done);
+  else if(currentFilter !== 'all') filtered = todos.filter(t=>!t.done && t.prio===currentFilter);
+  else filtered = todos.filter(t=>!t.done);
+
+  list.innerHTML = filtered.length ? filtered.map(t => `
+    <div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${t.id})">
+      <div class="checkbox">${t.done?'✓':''}</div>
+      <div class="todo-content">
+        <div class="todo-title">${t.title}</div>
+        ${t.desc?`<div class="todo-desc">${t.desc}</div>`:''}
+        <div class="todo-meta">
+          <span class="badge ${prioConfig[t.prio]?.cls||'badge-grey'}">${prioConfig[t.prio]?.label||t.prio}</span>
+          <span class="badge badge-grey">${t.tag}</span>
+          <button onclick="deleteTodo(event,${t.id})" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.7rem;padding:0;margin-left:.5rem;">✕</button>
+        </div>
+      </div>
+    </div>
+  `).join('') : '<div style="padding:1rem;color:var(--muted);font-size:.8rem;">Keine Einträge.</div>';
+
+  updateStats();
+}
+
+function updateStats() {
+  const open = todos.filter(t=>!t.done);
+  document.getElementById('cnt-sofort').textContent = open.filter(t=>t.prio==='sofort').length;
+  document.getElementById('cnt-woche').textContent = open.filter(t=>t.prio==='diese-woche').length;
+  document.getElementById('cnt-offen').textContent = open.length;
+  document.getElementById('cnt-done').textContent = todos.filter(t=>t.done).length;
+}
+
+function toggleTodo(id) {
+  const t = todos.find(t=>t.id===id);
+  if(t) { t.done=!t.done; saveTodos(todos); renderTodos(); }
+}
+function deleteTodo(e, id) {
+  e.stopPropagation();
+  todos = todos.filter(t=>t.id!==id);
+  saveTodos(todos); renderTodos();
+}
+function addTodo() {
+  const title = document.getElementById('new-title').value.trim();
+  if(!title) return;
+  todos.unshift({
+    id: Date.now(),
+    title,
+    desc: document.getElementById('new-desc').value.trim(),
+    prio: document.getElementById('new-prio').value,
+    tag: document.getElementById('new-tag').value,
+    done: false
+  });
+  saveTodos(todos);
+  document.getElementById('new-title').value='';
+  document.getElementById('new-desc').value='';
+  renderTodos();
+}
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTodos();
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+let timerStart = null;
+
+function formatTime(s) {
+  const h = String(Math.floor(s/3600)).padStart(2,'0');
+  const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const sec = String(s%60).padStart(2,'0');
+  return `${h}:${m}:${sec}`;
+}
+function startTimer() {
+  if(timerRunning) return;
+  timerRunning = true;
+  timerStart = new Date();
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    document.getElementById('timer-display').textContent = formatTime(timerSeconds);
+  }, 1000);
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('btn-stop').disabled = false;
+}
+function stopTimer() {
+  if(!timerRunning) return;
+  clearInterval(timerInterval);
+  timerRunning = false;
+  const kunde = document.getElementById('timer-kunde').value;
+  const task = document.getElementById('timer-task').value;
+  if(kunde && task) {
+    entries.unshift({
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+      kunde, task,
+      note: document.getElementById('timer-note').value,
+      seconds: timerSeconds,
+      type: 'timer'
+    });
+    saveEntries(entries);
+    renderToday();
+  }
+  document.getElementById('btn-start').disabled = false;
+  document.getElementById('btn-stop').disabled = true;
+}
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 0;
+  document.getElementById('timer-display').textContent = '00:00:00';
+  document.getElementById('btn-start').disabled = false;
+  document.getElementById('btn-stop').disabled = true;
+}
+
+// ── MANUAL ────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('man-date').value = new Date().toISOString().split('T')[0];
+});
+function addManual() {
+  const h = parseInt(document.getElementById('man-h').value)||0;
+  const m = parseInt(document.getElementById('man-m').value)||0;
+  const seconds = h*3600 + m*60;
+  const kunde = document.getElementById('man-kunde').value;
+  const task = document.getElementById('man-task').value.trim();
+  if(!task || seconds===0) return alert('Aufgabe und Zeit erforderlich.');
+  entries.unshift({
+    id: Date.now(),
+    date: document.getElementById('man-date').value,
+    kunde, task,
+    note: document.getElementById('man-note').value,
+    seconds,
+    type: 'manual'
+  });
+  saveEntries(entries);
+  document.getElementById('man-task').value='';
+  document.getElementById('man-note').value='';
+  document.getElementById('man-h').value='';
+  document.getElementById('man-m').value='';
+  renderToday();
+}
+
+// ── TODAY VIEW ────────────────────────────────────────────────────
+const kunden = ['Aesthetic Skin','Novogenia','Wolf GmbH','Joseph Hehenwarter','Essentials Concept','Privat'];
+const kundeAccent = {
+  'Aesthetic Skin':'#e8b4b8','Novogenia':'#83A5A0','Wolf GmbH':'#E86400',
+  'Joseph Hehenwarter':'#C8A800','Essentials Concept':'#4a90d9','Privat':'#9b59b6'
+};
+
+function renderToday() {
+  const today = new Date().toISOString().split('T')[0];
+  const todayEntries = entries.filter(e=>e.date===today);
+
+  // Kacheln
+  const grid = document.getElementById('kunden-today');
+  grid.innerHTML = kunden.map(k => {
+    const kEntries = todayEntries.filter(e=>e.kunde===k);
+    const total = kEntries.reduce((s,e)=>s+e.seconds,0);
+    const h = Math.floor(total/3600);
+    const m = Math.floor((total%3600)/60);
+    return `<div class="kunden-kachel" style="border-left-color:${kundeAccent[k]||'#555'}">
+      <div class="kachel-name">${k}</div>
+      <div class="kachel-time">${h}h ${m}m</div>
+      <div class="kachel-entries">${kEntries.length} ${kEntries.length===1?'Eintrag':'Einträge'}</div>
+    </div>`;
+  }).join('');
+
+  // Liste
+  const list = document.getElementById('entries-today');
+  list.innerHTML = todayEntries.length ? todayEntries.map(e => `
+    <div class="entry-item">
+      <div class="entry-left">
+        <span class="entry-kunde badge badge-grey" style="border-color:${kundeAccent[e.kunde]||'#555'};color:${kundeAccent[e.kunde]||'#555'}">${e.kunde}</span>
+        <div>
+          <div class="entry-task">${e.task}</div>
+          ${e.note?`<div class="entry-time">${e.note}</div>`:''}
+        </div>
+      </div>
+      <div class="entry-right">
+        <div class="entry-dauer">${Math.floor(e.seconds/3600)}h ${Math.floor((e.seconds%3600)/60)}m</div>
+        <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
+      </div>
+    </div>
+  `).join('') : '<div style="padding:1rem;color:var(--muted);font-size:.8rem;">Noch keine Einträge heute.</div>';
+}
+
+function deleteEntry(id) {
+  entries = entries.filter(e=>e.id!==id);
+  saveEntries(entries);
+  renderToday();
+}
+
+// ── AUSWERTUNG ────────────────────────────────────────────────────
+function setAuswertung(f, btn) {
+  auswertungFilter = f;
+  document.querySelectorAll('#page-auswertung .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAuswertung();
+}
+
+function renderAuswertung() {
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1);
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  let filtered = entries;
+  if(auswertungFilter==='today') filtered = entries.filter(e=>e.date===today);
+  else if(auswertungFilter==='week') filtered = entries.filter(e=>new Date(e.date)>=weekStart);
+  else if(auswertungFilter==='month') filtered = entries.filter(e=>new Date(e.date)>=monthStart);
+
+  // Stats per Kunde
+  const byKunde = {};
+  filtered.forEach(e => {
+    if(!byKunde[e.kunde]) byKunde[e.kunde]=0;
+    byKunde[e.kunde]+=e.seconds;
+  });
+  const total = filtered.reduce((s,e)=>s+e.seconds,0);
+
+  // Stats Grid
+  const topKunden = Object.entries(byKunde).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  document.getElementById('auswertung-stats').innerHTML = `
+    <div class="stat stat-blue"><div class="stat-value">${Math.floor(total/3600)}h ${Math.floor((total%3600)/60)}m</div><div class="stat-label">Gesamt</div></div>
+    ${topKunden.map(([k,s])=>`<div class="stat" style="border-left:2px solid ${kundeAccent[k]||'#555'}"><div class="stat-value">${Math.floor(s/3600)}h ${Math.floor((s%3600)/60)}m</div><div class="stat-label">${k}</div></div>`).join('')}
+  `;
+
+  // Tabelle
+  document.getElementById('auswertung-table').innerHTML = filtered.length ?
+    filtered.map(e=>`
+      <tr>
+        <td>${e.date}</td>
+        <td><span style="color:${kundeAccent[e.kunde]||'#555'}">${e.kunde}</span></td>
+        <td>${e.task}</td>
+        <td>${Math.floor(e.seconds/3600)}h ${Math.floor((e.seconds%3600)/60)}m</td>
+        <td style="color:var(--muted)">${e.note||'—'}</td>
+        <td><button class="btn btn-danger" onclick="deleteEntryAuswertung(${e.id})" style="padding:.2rem .5rem">✕</button></td>
+      </tr>
+    `).join('') : '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem;">Keine Einträge.</td></tr>';
+}
+
+function deleteEntryAuswertung(id) {
+  entries = entries.filter(e=>e.id!==id);
+  saveEntries(entries);
+  renderAuswertung();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+renderTodos();
+document.getElementById('man-date').value = new Date().toISOString().split('T')[0];
+renderToday();
+</script>
+</body>
+</html>
