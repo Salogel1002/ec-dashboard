@@ -6,39 +6,25 @@
 <title>EC Operations Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0c0c0c;--surface:#141414;--surface2:#1a1a1a;--border:#222;--border2:#2e2e2e;
-  --white:#fff;--muted:#555;--accent:#C8A800;--text:#d8d4cc;
-  --red:#D94A00;--green:#5aaa5a;--blue:#4a90d9;--purple:#9b59b6;
-  --font:'Nunito',sans-serif;
-}
+:root{--bg:#0c0c0c;--surface:#141414;--border:#222;--border2:#2e2e2e;--white:#fff;--muted:#555;--accent:#C8A800;--text:#d8d4cc;--red:#D94A00;--green:#5aaa5a;--blue:#4a90d9;--font:'Nunito',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-weight:300;-webkit-font-smoothing:antialiased;}
 input,select,textarea,button{font-family:var(--font);}
-
-/* NAV */
 .nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
 .logo{display:flex;align-items:center;gap:.6rem;}
 .wordmark .name{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--white);font-weight:700;}
 .wordmark .sub{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
 .wordmark{padding-left:.6rem;border-left:1px solid var(--border2);}
-.nav-clock{text-align:right;}
-.clock-time{font-size:1.4rem;font-weight:200;color:var(--white);letter-spacing:.05em;line-height:1;}
-.clock-date{font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
-.nav-tabs{display:flex;gap:0;}
+.clock-time{font-size:1.4rem;font-weight:200;color:var(--white);letter-spacing:.05em;line-height:1;text-align:right;}
+.clock-date{font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:2px;text-align:right;}
+.nav-tabs{display:flex;}
 .tab-btn{font-family:var(--font);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:.5rem 1.2rem;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--muted);cursor:pointer;}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 .tab-btn:hover{color:var(--white);}
-
-/* PAGES */
 .page{display:none;padding:1.5rem 2rem;}
 .page.active{display:block;}
-
-/* SECTION */
 .section-title{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
-
-/* STATS ROW */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:1.5rem;}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);margin-bottom:1.5rem;}
 .stat{background:var(--surface);padding:1rem 1.2rem;}
 .stat-value{font-size:1.8rem;font-weight:200;color:var(--white);line-height:1;}
 .stat-label{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
@@ -46,16 +32,13 @@ input,select,textarea,button{font-family:var(--font);}
 .stat-yellow{border-left:2px solid var(--accent);}
 .stat-green{border-left:2px solid var(--green);}
 .stat-blue{border-left:2px solid var(--blue);}
-
-/* FILTERS */
+.stat-purple{border-left:2px solid #9b59b6;}
 .filters{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap;}
 .filter-btn{font-family:var(--font);font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;padding:.25rem .7rem;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;}
 .filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* TODO ITEMS */
 .todo-item{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 1rem;background:var(--surface);border:1px solid var(--border2);margin-bottom:1px;cursor:pointer;transition:border-color .15s;}
 .todo-item:hover{border-color:var(--accent);}
-.todo-item.done{opacity:.4;}
+.todo-item.done{opacity:.35;}
 .todo-item.done .todo-title{text-decoration:line-through;}
 .checkbox{width:15px;height:15px;border:1.5px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#000;}
 .todo-item.done .checkbox{background:var(--green);border-color:var(--green);}
@@ -69,9 +52,8 @@ input,select,textarea,button{font-family:var(--font);}
 .badge-green{border-color:#3a7a3a;color:var(--green);}
 .badge-blue{border-color:#2a5a9a;color:var(--blue);}
 .badge-grey{border-color:var(--border2);color:var(--muted);}
-
-/* ADD TODO */
-.add-form{background:var(--surface);border:1px solid var(--border2);padding:1rem;margin-bottom:1rem;display:grid;grid-template-columns:1fr 1fr auto auto;gap:.5rem;align-items:end;}
+.badge-apple{border-color:#555;color:#aaa;}
+.add-form{background:var(--surface);border:1px solid var(--border2);padding:1rem;margin-bottom:1rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:.5rem;align-items:end;}
 .add-form input,.add-form select{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--white);font-size:.8rem;padding:.3rem 0;outline:none;width:100%;}
 .add-form input::placeholder{color:var(--muted);}
 .add-form select option{background:var(--surface);}
@@ -79,11 +61,10 @@ input,select,textarea,button{font-family:var(--font);}
 .btn-primary{border-color:var(--accent);color:var(--accent);}
 .btn-primary:hover{background:var(--accent);color:#000;}
 .btn-danger{border-color:#7a2000;color:var(--red);}
-.btn-danger:hover{background:var(--red);color:#000;}
 .btn-green{border-color:#3a7a3a;color:var(--green);}
 .btn-green:hover{background:var(--green);color:#000;}
-
-/* ZEITERFASSUNG */
+.sync-note{font-size:.65rem;color:var(--muted);padding:.5rem 1rem;background:var(--surface);border:1px solid var(--border2);border-left:3px solid var(--accent);margin-bottom:1rem;}
+/* ZEIT */
 .timer-card{background:var(--surface);border:1px solid var(--border2);padding:1.5rem;margin-bottom:1rem;}
 .timer-display{font-size:3rem;font-weight:200;color:var(--white);letter-spacing:.1em;text-align:center;margin:1rem 0;}
 .timer-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;}
@@ -93,39 +74,24 @@ input,select,textarea,button{font-family:var(--font);}
 .input-field{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--white);font-size:.85rem;padding:.3rem 0;outline:none;width:100%;}
 .input-field::placeholder{color:var(--muted);}
 .input-field option{background:var(--surface);}
-
-/* MANUAL ENTRY */
 .manual-form{background:var(--surface);border:1px solid var(--border2);padding:1rem;margin-bottom:1rem;}
 .manual-grid{display:grid;grid-template-columns:1fr 1fr 1fr 80px 80px auto;gap:.6rem;align-items:end;}
-
-/* EINTRAEGE */
 .entry-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;background:var(--surface);border:1px solid var(--border2);margin-bottom:1px;}
 .entry-left{display:flex;gap:1rem;align-items:center;}
-.entry-kunde{font-size:.45rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:2px 6px;border:1px solid;}
 .entry-task{font-size:.82rem;color:var(--white);}
-.entry-time{font-size:.75rem;color:var(--muted);margin-top:2px;}
-.entry-right{display:flex;gap:1rem;align-items:center;}
+.entry-note{font-size:.72rem;color:var(--muted);margin-top:2px;}
 .entry-dauer{font-size:1rem;font-weight:200;color:var(--white);}
-.entry-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;}
+.entry-del{background:transparent;border:none;color:var(--muted);cursor:pointer;}
 .entry-del:hover{color:var(--red);}
-
-/* KUNDEN KACHELN */
-.kunden-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);margin-bottom:1.5rem;}
+.kunden-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);margin-bottom:1.5rem;}
 .kunden-kachel{background:var(--surface);padding:1.2rem;border-left:3px solid transparent;}
-.kachel-name{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.5rem;}
+.kachel-name{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.5rem;}
 .kachel-time{font-size:1.6rem;font-weight:200;color:var(--white);line-height:1;}
-.kachel-entries{font-size:.65rem;color:var(--muted);margin-top:2px;}
-
-/* AUSWERTUNG */
+.kachel-entries{font-size:.6rem;color:var(--muted);margin-top:2px;}
 .auswertung-table{width:100%;border-collapse:collapse;}
 .auswertung-table th{font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:.4rem .8rem;border-bottom:1px solid var(--border2);text-align:left;}
 .auswertung-table td{font-size:.8rem;color:var(--text);padding:.5rem .8rem;border-bottom:1px solid var(--border);}
 .auswertung-table tr:last-child td{border-bottom:none;}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border2);}
 </style>
 </head>
 <body>
@@ -136,34 +102,30 @@ input,select,textarea,button{font-family:var(--font);}
       <rect x="0" y="0" width="7" height="2"/>
       <path d="M0,6 H7 V8 H2 V12 H7 V14 H0 Z"/>
     </svg>
-    <div class="wordmark">
-      <div class="name">Essentials Concept</div>
-      <div class="sub">Operations</div>
-    </div>
+    <div class="wordmark"><div class="name">Essentials Concept</div><div class="sub">Operations</div></div>
   </div>
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="showPage('todos')">Open Items</button>
-    <button class="tab-btn" onclick="showPage('zeit')">Zeiterfassung</button>
-    <button class="tab-btn" onclick="showPage('auswertung')">Auswertung</button>
+    <button class="tab-btn active" onclick="showPage('todos',this)">Open Items</button>
+    <button class="tab-btn" onclick="showPage('zeit',this)">Zeiterfassung</button>
+    <button class="tab-btn" onclick="showPage('auswertung',this)">Auswertung</button>
   </div>
-  <div class="nav-clock">
-    <div class="clock-time" id="clock">00:00:00</div>
-    <div class="clock-date" id="clockdate"></div>
-  </div>
+  <div><div class="clock-time" id="clock">00:00:00</div><div class="clock-date" id="clockdate"></div></div>
 </nav>
 
-<!-- PAGE: TODOS -->
+<!-- TODOS -->
 <div class="page active" id="page-todos">
   <div class="stats">
     <div class="stat stat-red"><div class="stat-value" id="cnt-sofort">0</div><div class="stat-label">Sofort</div></div>
     <div class="stat stat-yellow"><div class="stat-value" id="cnt-woche">0</div><div class="stat-label">Diese Woche</div></div>
     <div class="stat stat-blue"><div class="stat-value" id="cnt-offen">0</div><div class="stat-label">Offen gesamt</div></div>
+    <div class="stat stat-purple"><div class="stat-value" id="cnt-apple">0</div><div class="stat-label">📱 Reminders</div></div>
     <div class="stat stat-green"><div class="stat-value" id="cnt-done">0</div><div class="stat-label">Erledigt</div></div>
   </div>
 
+  <div class="sync-note">📱 <strong>Apple Reminders Sync:</strong> Einträge von iPhone/Mac werden täglich morgens von Alex synchronisiert. Neue Todos die du hier hinzufügst → gehen automatisch in deine Reminders-App.</div>
+
   <div class="add-form">
     <input id="new-title" placeholder="Neue Aufgabe...">
-    <input id="new-desc" placeholder="Details (optional)">
     <select id="new-prio">
       <option value="sofort">🔴 Sofort</option>
       <option value="diese-woche" selected>🟡 Diese Woche</option>
@@ -173,12 +135,13 @@ input,select,textarea,button{font-family:var(--font);}
     </select>
     <select id="new-tag">
       <option value="Aesthetic Skin">Aesthetic Skin</option>
+      <option value="Essentials Concept">Essentials Concept</option>
       <option value="Novogenia">Novogenia</option>
-      <option value="Essentials">Essentials</option>
       <option value="Privat">Privat</option>
       <option value="System">System</option>
       <option value="Finanzen">Finanzen</option>
     </select>
+    <input id="new-desc" placeholder="Details (optional)">
     <button class="btn btn-primary" onclick="addTodo()">+ Hinzufügen</button>
   </div>
 
@@ -189,27 +152,25 @@ input,select,textarea,button{font-family:var(--font);}
     <button class="filter-btn" onclick="setFilter('mittelfristig',this)">Mittelfristig</button>
     <button class="filter-btn" onclick="setFilter('geparkt',this)">Geparkt</button>
     <button class="filter-btn" onclick="setFilter('warten',this)">Warten</button>
-    <button class="filter-btn" onclick="setFilter('done',this)">Erledigt</button>
+    <button class="filter-btn" onclick="setFilter('Aesthetic Skin',this)">Aesthetic Skin</button>
+    <button class="filter-btn" onclick="setFilter('Essentials Concept',this)">Essentials Concept</button>
+    <button class="filter-btn" onclick="setFilter('Novogenia',this)">Novogenia</button>
+    <button class="filter-btn" onclick="setFilter('done',this)">✓ Erledigt</button>
   </div>
-
   <div id="todo-list"></div>
 </div>
 
-<!-- PAGE: ZEITERFASSUNG -->
+<!-- ZEITERFASSUNG -->
 <div class="page" id="page-zeit">
   <div class="section-title">Live Timer</div>
   <div class="timer-card">
     <div class="timer-inputs">
       <div class="input-group">
-        <label class="input-label">Kunde / Kategorie</label>
+        <label class="input-label">Kunde</label>
         <select class="input-field" id="timer-kunde">
-          <option value="">Bitte wählen...</option>
-          <option value="Aesthetic Skin">Aesthetic Skin</option>
-          <option value="Novogenia">Novogenia</option>
-          <option value="Wolf GmbH">Wolf GmbH</option>
-          <option value="Joseph Hehenwarter">Joseph Hehenwarter</option>
-          <option value="Essentials Concept">Essentials Concept</option>
-          <option value="Privat">Privat</option>
+          <option value="">Wählen...</option>
+          <option>Aesthetic Skin</option><option>Novogenia</option><option>Wolf GmbH</option>
+          <option>Joseph Hehenwarter</option><option>Essentials Concept</option><option>Privat</option>
         </select>
       </div>
       <div class="input-group">
@@ -218,8 +179,8 @@ input,select,textarea,button{font-family:var(--font);}
       </div>
     </div>
     <div class="input-group" style="margin-bottom:1rem;">
-      <label class="input-label">Ergebnis / Notiz</label>
-      <input class="input-field" id="timer-note" placeholder="Ergebnis oder kurze Notiz...">
+      <label class="input-label">Notiz / Ergebnis</label>
+      <input class="input-field" id="timer-note" placeholder="Kurze Notiz...">
     </div>
     <div class="timer-display" id="timer-display">00:00:00</div>
     <div class="timer-controls">
@@ -232,39 +193,19 @@ input,select,textarea,button{font-family:var(--font);}
   <div class="section-title">Manuell erfassen</div>
   <div class="manual-form">
     <div class="manual-grid">
-      <div class="input-group">
-        <label class="input-label">Datum</label>
-        <input class="input-field" id="man-date" type="date">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Kunde</label>
+      <div class="input-group"><label class="input-label">Datum</label><input class="input-field" id="man-date" type="date"></div>
+      <div class="input-group"><label class="input-label">Kunde</label>
         <select class="input-field" id="man-kunde">
-          <option value="Aesthetic Skin">Aesthetic Skin</option>
-          <option value="Novogenia">Novogenia</option>
-          <option value="Wolf GmbH">Wolf GmbH</option>
-          <option value="Joseph Hehenwarter">Joseph Hehenwarter</option>
-          <option value="Essentials Concept">Essentials Concept</option>
-          <option value="Privat">Privat</option>
+          <option>Aesthetic Skin</option><option>Novogenia</option><option>Wolf GmbH</option>
+          <option>Joseph Hehenwarter</option><option>Essentials Concept</option><option>Privat</option>
         </select>
       </div>
-      <div class="input-group">
-        <label class="input-label">Aufgabe</label>
-        <input class="input-field" id="man-task" placeholder="Aufgabe...">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Stunden</label>
-        <input class="input-field" id="man-h" type="number" min="0" max="24" placeholder="0">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Minuten</label>
-        <input class="input-field" id="man-m" type="number" min="0" max="59" placeholder="0">
-      </div>
-      <button class="btn btn-primary" onclick="addManual()" style="align-self:flex-end;">+ Hinzufügen</button>
+      <div class="input-group"><label class="input-label">Aufgabe</label><input class="input-field" id="man-task" placeholder="Aufgabe..."></div>
+      <div class="input-group"><label class="input-label">Stunden</label><input class="input-field" id="man-h" type="number" min="0" placeholder="0"></div>
+      <div class="input-group"><label class="input-label">Minuten</label><input class="input-field" id="man-m" type="number" min="0" max="59" placeholder="0"></div>
+      <button class="btn btn-primary" onclick="addManual()" style="align-self:flex-end">+ Add</button>
     </div>
-    <div class="input-group" style="margin-top:.5rem;">
-      <label class="input-label">Ergebnis / Notiz</label>
-      <input class="input-field" id="man-note" placeholder="Ergebnis oder Notiz...">
-    </div>
+    <div class="input-group" style="margin-top:.6rem;"><label class="input-label">Notiz</label><input class="input-field" id="man-note" placeholder="Ergebnis..."></div>
   </div>
 
   <div class="section-title">Heute</div>
@@ -272,17 +213,15 @@ input,select,textarea,button{font-family:var(--font);}
   <div id="entries-today"></div>
 </div>
 
-<!-- PAGE: AUSWERTUNG -->
+<!-- AUSWERTUNG -->
 <div class="page" id="page-auswertung">
-  <div class="stats" id="auswertung-stats"></div>
-  <div class="section-title">Filter</div>
-  <div class="filters" style="margin-bottom:1.5rem;">
+  <div class="stats" id="auswertung-stats" style="grid-template-columns:repeat(4,1fr)"></div>
+  <div class="filters" style="margin:1rem 0 1.5rem">
     <button class="filter-btn active" onclick="setAuswertung('today',this)">Heute</button>
     <button class="filter-btn" onclick="setAuswertung('week',this)">Diese Woche</button>
     <button class="filter-btn" onclick="setAuswertung('month',this)">Dieser Monat</button>
     <button class="filter-btn" onclick="setAuswertung('all',this)">Alles</button>
   </div>
-  <div class="section-title">Alle Einträge</div>
   <table class="auswertung-table">
     <thead><tr><th>Datum</th><th>Kunde</th><th>Aufgabe</th><th>Dauer</th><th>Notiz</th><th></th></tr></thead>
     <tbody id="auswertung-table"></tbody>
@@ -290,344 +229,224 @@ input,select,textarea,button{font-family:var(--font);}
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────
-const STORAGE_TODOS = 'ec_todos_v2';
-const STORAGE_ENTRIES = 'ec_entries_v2';
+const S_TODOS='ec_todos_v3', S_ENTRIES='ec_entries_v2';
+function load(k,def){try{return JSON.parse(localStorage.getItem(k))||def;}catch(e){return def;}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
-function loadTodos() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_TODOS)) || getDefaultTodos(); }
-  catch(e) { return getDefaultTodos(); }
+const defaultTodos = [
+  // Open Items
+  {id:1,title:"Caro auf Slack — Meta Ads Spend",desc:"Warum kein Spend seit 31.03.? Halber Monat verloren.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+  {id:2,title:"Felix Freigabe — Stellenanzeigen schalten",desc:"Hochkant-Varianten fertig → €500 Budget Woche 1.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+  {id:3,title:"Healthflow-Links → Beauty Agents",desc:"Zeitkritisch: Marlena noch ~6 Wochen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+  {id:4,title:"Werkstudent-Anzeige fixen",desc:"Nicht in Google Jobs sichtbar.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+  {id:5,title:"CrayAds Drehtag koordinieren",desc:"Nächste Woche.",prio:"sofort",tag:"Aesthetic Skin",done:false},
+  {id:6,title:"admin@ Mailbox für Sophie freischalten",desc:"M365 Admin → Shared Mailboxes → k.dueh@ hinzufügen.",prio:"diese-woche",tag:"System",done:false},
+  {id:7,title:"Office/Offic einrichten",desc:"Diese Woche.",prio:"diese-woche",tag:"Aesthetic Skin",done:false},
+  {id:8,title:"Adobe März (€19,99)",desc:"Aus account.adobe.com ziehen.",prio:"diese-woche",tag:"Finanzen",done:false},
+  {id:9,title:"Mail Wachsmann (Commerzbank)",desc:"Noch offen.",prio:"diese-woche",tag:"Finanzen",done:false},
+  {id:10,title:"Novogenia Website Text — Versicherungen",desc:"Variante wählen und freigeben.",prio:"diese-woche",tag:"Novogenia",done:false},
+  {id:11,title:"Vorsorge-Termin mit Kathleen planen",desc:"5 Dokumente drucken, durchgehen, unterschreiben.",prio:"diese-woche",tag:"Privat",done:false},
+  {id:12,title:"StepStone Abo entscheiden",desc:"€149/Monat, 3 Anzeigen.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+  {id:13,title:"Employer Value Proposition mit Kathleen",desc:"1h Session: Warum bei Aesthetic Skin arbeiten?",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+  {id:14,title:"Karriereseite aufbauen",desc:"Ziel Mai 2026.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
+  {id:15,title:"Notar kontaktieren (Testament)",desc:"notarkammer-bayern.de",prio:"mittelfristig",tag:"Privat",done:false},
+  {id:16,title:"Bankvollmacht Münchner Bank",desc:"Beide müssen anwesend sein.",prio:"mittelfristig",tag:"Privat",done:false},
+  {id:17,title:"Browser Relay Extension prüfen",desc:"Extension verbindet sich nicht.",prio:"geparkt",tag:"System",done:false},
+  {id:18,title:"n8n Neuinstallation",prio:"geparkt",tag:"System",done:false,desc:""},
+  {id:19,title:"Mac mini #2 — Lokaler KI-Server",desc:"Wenn Novogenia-Partnerschaft konkret.",prio:"geparkt",tag:"Novogenia",done:false},
+  {id:20,title:"Plus Docs Januar (€25)",desc:"Warten auf Antwort.",prio:"warten",tag:"Finanzen",done:false},
+  {id:21,title:"Enzyme Februar (€5,30)",desc:"Warten auf Antwort.",prio:"warten",tag:"Finanzen",done:false},
+  {id:22,title:"Nils — abwarten",desc:"",prio:"warten",tag:"Aesthetic Skin",done:false},
+  {id:23,title:"Martin — Heyflow-Konzept abwarten",desc:"",prio:"warten",tag:"Aesthetic Skin",done:false},
+  // Apple Reminders — Aesthetic Skin
+  {id:100,title:"Architekturwettbewerb für Dienstleister",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:101,title:"Beauty Flat Ausarbeiten und Gedanken machen",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:102,title:"Doina Informieren — Ablauf nach Hydrafacial",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:103,title:"Fokus Kathleen Familie einrichten und erstellen",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:104,title:"Antwort an Max Oberhofer warum",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:105,title:"Gutscheine Rikes Spendenveranstaltung 10 Stück",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:106,title:"SEO-Session: 242 Weiterleitungen, Keywords, Content-Gap",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:107,title:"Aesthetic Skin Wissensdatenbank in Obsidian ablegen",desc:"~/obsidian/Strategy_Vault/",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:108,title:"Marilena Mail anlegen",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:109,title:"Scheubeck — Stromsäule und Toilettensitz",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:110,title:"Alena kündigen",desc:"",prio:"sofort",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:111,title:"Visitenkarten Praxis Haut",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:112,title:"Partnerschaften entwickeln",desc:"",prio:"mittelfristig",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:113,title:"Event am 11.11.",desc:"",prio:"mittelfristig",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:114,title:"Blogartikel schicken",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:115,title:"Video Raphaela",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:116,title:"Gutschein online mit Bezahlung",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:117,title:"Klärung ob nur Ärzte Akne behandeln dürfen",desc:"",prio:"mittelfristig",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:118,title:"Amex einsatzfertig machen",desc:"",prio:"sofort",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:119,title:"Analyse wie lange Vertrag Tobi noch läuft",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:120,title:"Daniel Anpassungen im CRM vornehmen",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:121,title:"Indeed Aesthetic Skin anlegen",desc:"",prio:"sofort",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:122,title:"Arbeitsverträge Mitarbeiterinnen → Flo",desc:"",prio:"sofort",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:123,title:"Letzte Mail zu säumigen Zahlern",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:124,title:"Skripte und Inhalte für alle Videos ausarbeiten",desc:"",prio:"mittelfristig",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:125,title:"Passwörter mit 1PW aufsetzen",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:126,title:"Visitenkarten Kathleen mit Handy Nummer",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:127,title:"Mappen dunkelblau",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+  {id:128,title:"Email Entwürfe Hydrafacial",desc:"",prio:"diese-woche",tag:"Aesthetic Skin",done:false,source:"reminders"},
+];
+
+let todos = load(S_TODOS, null) || defaultTodos;
+let entries = load(S_ENTRIES, []);
+let currentFilter = 'all', auswertungFilter = 'today';
+
+// Clock
+function updateClock(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('de-DE');
+  const days=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  document.getElementById('clockdate').textContent=`${days[n.getDay()]} · ${n.toLocaleDateString('de-DE')}`;
 }
-function saveTodos(todos) { localStorage.setItem(STORAGE_TODOS, JSON.stringify(todos)); }
-function loadEntries() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_ENTRIES)) || []; }
-  catch(e) { return []; }
-}
-function saveEntries(e) { localStorage.setItem(STORAGE_ENTRIES, JSON.stringify(e)); }
+setInterval(updateClock,1000); updateClock();
 
-function getDefaultTodos() {
-  return [
-    {id:1,title:"Caro auf Slack — Meta Ads Spend",desc:"Warum kein Spend seit 31.03.? Halber Monat verloren.",prio:"sofort",tag:"Aesthetic Skin",done:false},
-    {id:2,title:"Felix Freigabe — Stellenanzeigen schalten",desc:"Hochkant-Varianten fertig → €500 Budget Woche 1 bestätigen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
-    {id:3,title:"Healthflow-Links → Beauty Agents",desc:"Zeitkritisch: Marlena noch ~6 Wochen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
-    {id:4,title:"Werkstudent-Anzeige fixen",desc:"Nicht in Google Jobs sichtbar — günstige Alternative suchen.",prio:"sofort",tag:"Aesthetic Skin",done:false},
-    {id:5,title:"CrayAds Drehtag koordinieren",desc:"Nächste Woche — intern kommunizieren.",prio:"sofort",tag:"Aesthetic Skin",done:false},
-    {id:6,title:"admin@ Mailbox für Sophie freischalten",desc:"M365 Admin → Shared Mailboxes → k.dueh@ als Mitglied.",prio:"diese-woche",tag:"System",done:false},
-    {id:7,title:"Office/Offic einrichten",desc:"Diese Woche angehen.",prio:"diese-woche",tag:"Aesthetic Skin",done:false},
-    {id:8,title:"Adobe März (€19,99)",desc:"Manuell aus account.adobe.com ziehen.",prio:"diese-woche",tag:"Finanzen",done:false},
-    {id:9,title:"Mail Wachsmann (Commerzbank)",desc:"Noch offen.",prio:"diese-woche",tag:"Finanzen",done:false},
-    {id:10,title:"Mail Michael Schalk — Visitenkarten Kathleen",desc:"Bestellen für Kathleen.",prio:"diese-woche",tag:"Aesthetic Skin",done:false},
-    {id:11,title:"Novogenia Website Text — Versicherungen",desc:"Variante wählen und freigeben.",prio:"diese-woche",tag:"Novogenia",done:false},
-    {id:12,title:"Vorsorge-Termin mit Kathleen planen",desc:"5 Dokumente drucken, durchgehen, unterschreiben.",prio:"diese-woche",tag:"Privat",done:false},
-    {id:13,title:"StepStone Abo entscheiden",desc:"€149/Monat, 3 Daueranzeigen. Mit Kathleen abstimmen.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
-    {id:14,title:"Employer Value Proposition mit Kathleen",desc:"1h Session: Warum bei Aesthetic Skin arbeiten?",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
-    {id:15,title:"Karriereseite aufbauen",desc:"Ziel Mai 2026.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
-    {id:16,title:"Kathleen: Input für Dr. Platon Seite",desc:"Behandlungsablauf liefern.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
-    {id:17,title:"Video-Testimonials starten",desc:"Start: Lea Doppler. Auch für CrayAds nutzbar.",prio:"mittelfristig",tag:"Aesthetic Skin",done:false},
-    {id:18,title:"Notar kontaktieren (Testament)",desc:"notarkammer-bayern.de — Berliner Testament + GmbH.",prio:"mittelfristig",tag:"Privat",done:false},
-    {id:19,title:"Bankvollmacht Münchner Bank",desc:"Filialtermin — beide müssen anwesend sein.",prio:"mittelfristig",tag:"Privat",done:false},
-    {id:20,title:"Browser Relay Extension prüfen",desc:"Extension verbindet sich nicht.",prio:"geparkt",tag:"System",done:false},
-    {id:21,title:"n8n Neuinstallation",desc:"Kein konkretes Datum.",prio:"geparkt",tag:"System",done:false},
-    {id:22,title:"HeyGen + Aesthetic Skin Videos",desc:"Erst Kathleens Zustimmung + GUARD AVV-Freigabe.",prio:"geparkt",tag:"Aesthetic Skin",done:false},
-    {id:23,title:"Mac mini #2 — Lokaler KI-Server",desc:"Wenn Novogenia-Partnerschaft konkret. ~€1.449.",prio:"geparkt",tag:"Novogenia",done:false},
-    {id:24,title:"Google Ads Monitoring Aesthetic Skin",desc:"Wartet auf Karstens Signal.",prio:"geparkt",tag:"Aesthetic Skin",done:false},
-    {id:25,title:"Plus Docs Januar (€25)",desc:"Angeschrieben, warten auf Antwort.",prio:"warten",tag:"Finanzen",done:false},
-    {id:26,title:"Enzyme Februar (€5,30)",desc:"Angeschrieben, warten auf Antwort.",prio:"warten",tag:"Finanzen",done:false},
-    {id:27,title:"Nils — abwarten",desc:"Auf Rückmeldung warten.",prio:"warten",tag:"Aesthetic Skin",done:false},
-    {id:28,title:"Martin — Heyflow-Konzept abwarten",desc:"Konzept → dann Daniel zur Umsetzung.",prio:"warten",tag:"Aesthetic Skin",done:false},
-  ];
-}
-
-let todos = loadTodos();
-let entries = loadEntries();
-let currentFilter = 'all';
-let auswertungFilter = 'today';
-
-// ── CLOCK ─────────────────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('de-DE');
-  const days = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
-  document.getElementById('clockdate').textContent = `${days[now.getDay()]} · ${now.toLocaleDateString('de-DE')}`;
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-// ── NAVIGATION ────────────────────────────────────────────────────
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+// Nav
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
   if(name==='auswertung') renderAuswertung();
   if(name==='zeit') renderToday();
 }
 
-// ── TODOS ─────────────────────────────────────────────────────────
-const prioConfig = {
-  sofort: {label:'Sofort', cls:'badge-red'},
-  'diese-woche': {label:'Diese Woche', cls:'badge-yellow'},
-  mittelfristig: {label:'Mittelfristig', cls:'badge-blue'},
-  geparkt: {label:'Geparkt', cls:'badge-grey'},
-  warten: {label:'Warten', cls:'badge-grey'},
-};
-const kundeColors = {
-  'Aesthetic Skin':'#e8b4b8','Novogenia':'#83A5A0','Wolf GmbH':'#E86400',
-  'Essentials':'#C8A800','Privat':'#9b59b6','System':'#4a90d9','Finanzen':'#5aaa5a','Default':'#555'
-};
+const prioConf={sofort:{l:'Sofort',c:'badge-red'},'diese-woche':{l:'Diese Woche',c:'badge-yellow'},mittelfristig:{l:'Mittelfristig',c:'badge-blue'},geparkt:{l:'Geparkt',c:'badge-grey'},warten:{l:'Warten',c:'badge-grey'}};
+const kundeAccent={'Aesthetic Skin':'#e8b4b8','Novogenia':'#83A5A0','Wolf GmbH':'#E86400','Joseph Hehenwarter':'#C8A800','Essentials Concept':'#4a90d9','Privat':'#9b59b6'};
 
-function renderTodos() {
-  const list = document.getElementById('todo-list');
-  let filtered = todos;
-  if(currentFilter === 'done') filtered = todos.filter(t=>t.done);
-  else if(currentFilter !== 'all') filtered = todos.filter(t=>!t.done && t.prio===currentFilter);
-  else filtered = todos.filter(t=>!t.done);
+function renderTodos(){
+  const list=document.getElementById('todo-list');
+  let f=todos;
+  if(currentFilter==='done') f=todos.filter(t=>t.done);
+  else if(currentFilter==='all') f=todos.filter(t=>!t.done);
+  else if(['sofort','diese-woche','mittelfristig','geparkt','warten'].includes(currentFilter)) f=todos.filter(t=>!t.done&&t.prio===currentFilter);
+  else f=todos.filter(t=>!t.done&&t.tag===currentFilter);
 
-  list.innerHTML = filtered.length ? filtered.map(t => `
+  list.innerHTML=f.length?f.map(t=>`
     <div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${t.id})">
       <div class="checkbox">${t.done?'✓':''}</div>
       <div class="todo-content">
         <div class="todo-title">${t.title}</div>
         ${t.desc?`<div class="todo-desc">${t.desc}</div>`:''}
         <div class="todo-meta">
-          <span class="badge ${prioConfig[t.prio]?.cls||'badge-grey'}">${prioConfig[t.prio]?.label||t.prio}</span>
+          <span class="badge ${prioConf[t.prio]?.c||'badge-grey'}">${prioConf[t.prio]?.l||t.prio}</span>
           <span class="badge badge-grey">${t.tag}</span>
-          <button onclick="deleteTodo(event,${t.id})" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.7rem;padding:0;margin-left:.5rem;">✕</button>
+          ${t.source==='reminders'?'<span class="badge badge-apple">📱 Reminders</span>':''}
+          <button onclick="deleteTodo(event,${t.id})" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.7rem;margin-left:.4rem">✕</button>
         </div>
       </div>
-    </div>
-  `).join('') : '<div style="padding:1rem;color:var(--muted);font-size:.8rem;">Keine Einträge.</div>';
-
+    </div>`).join(''):'<div style="padding:1rem;color:var(--muted);font-size:.8rem;">Keine Einträge.</div>';
   updateStats();
 }
 
-function updateStats() {
-  const open = todos.filter(t=>!t.done);
-  document.getElementById('cnt-sofort').textContent = open.filter(t=>t.prio==='sofort').length;
-  document.getElementById('cnt-woche').textContent = open.filter(t=>t.prio==='diese-woche').length;
-  document.getElementById('cnt-offen').textContent = open.length;
-  document.getElementById('cnt-done').textContent = todos.filter(t=>t.done).length;
+function updateStats(){
+  const open=todos.filter(t=>!t.done);
+  document.getElementById('cnt-sofort').textContent=open.filter(t=>t.prio==='sofort').length;
+  document.getElementById('cnt-woche').textContent=open.filter(t=>t.prio==='diese-woche').length;
+  document.getElementById('cnt-offen').textContent=open.length;
+  document.getElementById('cnt-apple').textContent=open.filter(t=>t.source==='reminders').length;
+  document.getElementById('cnt-done').textContent=todos.filter(t=>t.done).length;
 }
 
-function toggleTodo(id) {
-  const t = todos.find(t=>t.id===id);
-  if(t) { t.done=!t.done; saveTodos(todos); renderTodos(); }
-}
-function deleteTodo(e, id) {
-  e.stopPropagation();
-  todos = todos.filter(t=>t.id!==id);
-  saveTodos(todos); renderTodos();
-}
-function addTodo() {
-  const title = document.getElementById('new-title').value.trim();
-  if(!title) return;
-  todos.unshift({
-    id: Date.now(),
-    title,
-    desc: document.getElementById('new-desc').value.trim(),
-    prio: document.getElementById('new-prio').value,
-    tag: document.getElementById('new-tag').value,
-    done: false
-  });
-  saveTodos(todos);
+function toggleTodo(id){const t=todos.find(t=>t.id===id);if(t){t.done=!t.done;save(S_TODOS,todos);renderTodos();}}
+function deleteTodo(e,id){e.stopPropagation();todos=todos.filter(t=>t.id!==id);save(S_TODOS,todos);renderTodos();}
+function addTodo(){
+  const title=document.getElementById('new-title').value.trim();
+  if(!title)return;
+  todos.unshift({id:Date.now(),title,desc:document.getElementById('new-desc').value.trim(),prio:document.getElementById('new-prio').value,tag:document.getElementById('new-tag').value,done:false});
+  save(S_TODOS,todos);
   document.getElementById('new-title').value='';
   document.getElementById('new-desc').value='';
   renderTodos();
 }
-function setFilter(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filters .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTodos();
-}
+function setFilter(f,btn){currentFilter=f;document.querySelectorAll('.filters .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTodos();}
 
-// ── TIMER ─────────────────────────────────────────────────────────
-let timerInterval = null;
-let timerSeconds = 0;
-let timerRunning = false;
-let timerStart = null;
-
-function formatTime(s) {
-  const h = String(Math.floor(s/3600)).padStart(2,'0');
-  const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
-  const sec = String(s%60).padStart(2,'0');
-  return `${h}:${m}:${sec}`;
-}
-function startTimer() {
-  if(timerRunning) return;
-  timerRunning = true;
-  timerStart = new Date();
-  timerInterval = setInterval(() => {
+// Timer
+let timerInterval=null,timerSeconds=0,timerRunning=false;
+function formatTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(n=>String(n).padStart(2,'0')).join(':');}
+function startTimer(){
+  if(timerRunning)return;
+  timerRunning=true;
+  // Start-Zeit in localStorage speichern für Crash-Recovery
+  const startTs = Date.now() - timerSeconds*1000;
+  localStorage.setItem('ec_timer_start', startTs);
+  localStorage.setItem('ec_timer_kunde', document.getElementById('timer-kunde').value);
+  localStorage.setItem('ec_timer_task', document.getElementById('timer-task').value);
+  timerInterval=setInterval(()=>{
     timerSeconds++;
-    document.getElementById('timer-display').textContent = formatTime(timerSeconds);
-  }, 1000);
-  document.getElementById('btn-start').disabled = true;
-  document.getElementById('btn-stop').disabled = false;
+    document.getElementById('timer-display').textContent=formatTime(timerSeconds);
+    localStorage.setItem('ec_timer_seconds', timerSeconds);
+  },1000);
+  document.getElementById('btn-start').disabled=true;
+  document.getElementById('btn-stop').disabled=false;
 }
-function stopTimer() {
-  if(!timerRunning) return;
-  clearInterval(timerInterval);
-  timerRunning = false;
-  const kunde = document.getElementById('timer-kunde').value;
-  const task = document.getElementById('timer-task').value;
-  if(kunde && task) {
-    entries.unshift({
-      id: Date.now(),
-      date: new Date().toISOString().split('T')[0],
-      kunde, task,
-      note: document.getElementById('timer-note').value,
-      seconds: timerSeconds,
-      type: 'timer'
-    });
-    saveEntries(entries);
-    renderToday();
+function stopTimer(){if(!timerRunning)return;clearInterval(timerInterval);timerRunning=false;
+  localStorage.removeItem('ec_timer_start');
+  localStorage.removeItem('ec_timer_seconds');
+  localStorage.removeItem('ec_timer_kunde');
+  localStorage.removeItem('ec_timer_task');const k=document.getElementById('timer-kunde').value,t=document.getElementById('timer-task').value;if(k&&t){entries.unshift({id:Date.now(),date:new Date().toISOString().split('T')[0],kunde:k,task:t,note:document.getElementById('timer-note').value,seconds:timerSeconds});save(S_ENTRIES,entries);renderToday();}document.getElementById('btn-start').disabled=false;document.getElementById('btn-stop').disabled=true;}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSeconds=0;
+  document.getElementById('timer-display').textContent='00:00:00';
+  document.getElementById('btn-start').disabled=false;
+  document.getElementById('btn-stop').disabled=true;
+  localStorage.removeItem('ec_timer_start');
+  localStorage.removeItem('ec_timer_seconds');
+  localStorage.removeItem('ec_timer_kunde');
+  localStorage.removeItem('ec_timer_task');
+}
+
+// Manual
+function addManual(){const h=parseInt(document.getElementById('man-h').value)||0,m=parseInt(document.getElementById('man-m').value)||0,s=h*3600+m*60,k=document.getElementById('man-kunde').value,t=document.getElementById('man-task').value.trim();if(!t||s===0)return;entries.unshift({id:Date.now(),date:document.getElementById('man-date').value,kunde:k,task:t,note:document.getElementById('man-note').value,seconds:s});save(S_ENTRIES,entries);document.getElementById('man-task').value='';document.getElementById('man-note').value='';document.getElementById('man-h').value='';document.getElementById('man-m').value='';renderToday();}
+
+// Today
+const kunden=['Aesthetic Skin','Novogenia','Wolf GmbH','Joseph Hehenwarter','Essentials Concept','Privat'];
+function renderToday(){
+  const today=new Date().toISOString().split('T')[0],te=entries.filter(e=>e.date===today);
+  document.getElementById('kunden-today').innerHTML=kunden.map(k=>{const ke=te.filter(e=>e.kunde===k),tot=ke.reduce((s,e)=>s+e.seconds,0);return`<div class="kunden-kachel" style="border-left-color:${kundeAccent[k]||'#555'}"><div class="kachel-name">${k}</div><div class="kachel-time">${Math.floor(tot/3600)}h ${Math.floor((tot%3600)/60)}m</div><div class="kachel-entries">${ke.length} Eintrag${ke.length!==1?'e':''}</div></div>`;}).join('');
+  document.getElementById('entries-today').innerHTML=te.length?te.map(e=>`<div class="entry-item"><div class="entry-left"><span class="badge badge-grey" style="border-color:${kundeAccent[e.kunde]||'#555'};color:${kundeAccent[e.kunde]||'#555'}">${e.kunde}</span><div><div class="entry-task">${e.task}</div>${e.note?`<div class="entry-note">${e.note}</div>`:''}</div></div><div class="entry-right"><div class="entry-dauer">${Math.floor(e.seconds/3600)}h ${Math.floor((e.seconds%3600)/60)}m</div><button class="entry-del" onclick="delEntry(${e.id})">✕</button></div></div>`).join(''):'<div style="padding:1rem;color:var(--muted);font-size:.8rem;">Noch keine Einträge heute.</div>';
+}
+function delEntry(id){entries=entries.filter(e=>e.id!==id);save(S_ENTRIES,entries);renderToday();}
+
+// Auswertung
+function setAuswertung(f,btn){auswertungFilter=f;document.querySelectorAll('#page-auswertung .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAuswertung();}
+function renderAuswertung(){
+  const now=new Date(),today=now.toISOString().split('T')[0],ws=new Date(now);ws.setDate(now.getDate()-now.getDay()+1);const ms=new Date(now.getFullYear(),now.getMonth(),1);
+  let f=entries;
+  if(auswertungFilter==='today') f=entries.filter(e=>e.date===today);
+  else if(auswertungFilter==='week') f=entries.filter(e=>new Date(e.date)>=ws);
+  else if(auswertungFilter==='month') f=entries.filter(e=>new Date(e.date)>=ms);
+  const tot=f.reduce((s,e)=>s+e.seconds,0),bk={};
+  f.forEach(e=>{bk[e.kunde]=(bk[e.kunde]||0)+e.seconds;});
+  const top=Object.entries(bk).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  document.getElementById('auswertung-stats').innerHTML=`<div class="stat stat-blue"><div class="stat-value">${Math.floor(tot/3600)}h ${Math.floor((tot%3600)/60)}m</div><div class="stat-label">Gesamt</div></div>${top.map(([k,s])=>`<div class="stat" style="border-left:2px solid ${kundeAccent[k]||'#555'}"><div class="stat-value">${Math.floor(s/3600)}h ${Math.floor((s%3600)/60)}m</div><div class="stat-label">${k}</div></div>`).join('')}`;
+  document.getElementById('auswertung-table').innerHTML=f.length?f.map(e=>`<tr><td>${e.date}</td><td style="color:${kundeAccent[e.kunde]||'#555'}">${e.kunde}</td><td>${e.task}</td><td>${Math.floor(e.seconds/3600)}h ${Math.floor((e.seconds%3600)/60)}m</td><td style="color:var(--muted)">${e.note||'—'}</td><td><button class="btn btn-danger" onclick="delEntryA(${e.id})" style="padding:.2rem .5rem">✕</button></td></tr>`).join(''):'<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">Keine Einträge.</td></tr>';
+}
+function delEntryA(id){entries=entries.filter(e=>e.id!==id);save(S_ENTRIES,entries);renderAuswertung();}
+
+// Timer Recovery — läuft der Timer noch?
+(function recoverTimer(){
+  const startTs = localStorage.getItem('ec_timer_start');
+  if(startTs){
+    const elapsed = Math.floor((Date.now() - parseInt(startTs)) / 1000);
+    timerSeconds = elapsed;
+    const kunde = localStorage.getItem('ec_timer_kunde') || '';
+    const task = localStorage.getItem('ec_timer_task') || '';
+    if(kunde) document.getElementById('timer-kunde').value = kunde;
+    if(task) document.getElementById('timer-task').value = task;
+    // Banner anzeigen
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:#1a1a1a;border:1px solid #C8A800;color:#C8A800;padding:.8rem 1.2rem;font-family:Nunito,sans-serif;font-size:.75rem;z-index:999;cursor:pointer;';
+    banner.innerHTML = '⚠️ Timer läuft noch: ' + formatTime(elapsed) + ' — <strong>Klick zum Fortsetzen</strong>';
+    banner.onclick = () => { showPage('zeit', document.querySelector('.tab-btn:nth-child(2)')); startTimer(); banner.remove(); };
+    document.body.appendChild(banner);
   }
-  document.getElementById('btn-start').disabled = false;
-  document.getElementById('btn-stop').disabled = true;
-}
-function resetTimer() {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  timerSeconds = 0;
-  document.getElementById('timer-display').textContent = '00:00:00';
-  document.getElementById('btn-start').disabled = false;
-  document.getElementById('btn-stop').disabled = true;
-}
+})();
 
-// ── MANUAL ────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('man-date').value = new Date().toISOString().split('T')[0];
-});
-function addManual() {
-  const h = parseInt(document.getElementById('man-h').value)||0;
-  const m = parseInt(document.getElementById('man-m').value)||0;
-  const seconds = h*3600 + m*60;
-  const kunde = document.getElementById('man-kunde').value;
-  const task = document.getElementById('man-task').value.trim();
-  if(!task || seconds===0) return alert('Aufgabe und Zeit erforderlich.');
-  entries.unshift({
-    id: Date.now(),
-    date: document.getElementById('man-date').value,
-    kunde, task,
-    note: document.getElementById('man-note').value,
-    seconds,
-    type: 'manual'
-  });
-  saveEntries(entries);
-  document.getElementById('man-task').value='';
-  document.getElementById('man-note').value='';
-  document.getElementById('man-h').value='';
-  document.getElementById('man-m').value='';
-  renderToday();
-}
-
-// ── TODAY VIEW ────────────────────────────────────────────────────
-const kunden = ['Aesthetic Skin','Novogenia','Wolf GmbH','Joseph Hehenwarter','Essentials Concept','Privat'];
-const kundeAccent = {
-  'Aesthetic Skin':'#e8b4b8','Novogenia':'#83A5A0','Wolf GmbH':'#E86400',
-  'Joseph Hehenwarter':'#C8A800','Essentials Concept':'#4a90d9','Privat':'#9b59b6'
-};
-
-function renderToday() {
-  const today = new Date().toISOString().split('T')[0];
-  const todayEntries = entries.filter(e=>e.date===today);
-
-  // Kacheln
-  const grid = document.getElementById('kunden-today');
-  grid.innerHTML = kunden.map(k => {
-    const kEntries = todayEntries.filter(e=>e.kunde===k);
-    const total = kEntries.reduce((s,e)=>s+e.seconds,0);
-    const h = Math.floor(total/3600);
-    const m = Math.floor((total%3600)/60);
-    return `<div class="kunden-kachel" style="border-left-color:${kundeAccent[k]||'#555'}">
-      <div class="kachel-name">${k}</div>
-      <div class="kachel-time">${h}h ${m}m</div>
-      <div class="kachel-entries">${kEntries.length} ${kEntries.length===1?'Eintrag':'Einträge'}</div>
-    </div>`;
-  }).join('');
-
-  // Liste
-  const list = document.getElementById('entries-today');
-  list.innerHTML = todayEntries.length ? todayEntries.map(e => `
-    <div class="entry-item">
-      <div class="entry-left">
-        <span class="entry-kunde badge badge-grey" style="border-color:${kundeAccent[e.kunde]||'#555'};color:${kundeAccent[e.kunde]||'#555'}">${e.kunde}</span>
-        <div>
-          <div class="entry-task">${e.task}</div>
-          ${e.note?`<div class="entry-time">${e.note}</div>`:''}
-        </div>
-      </div>
-      <div class="entry-right">
-        <div class="entry-dauer">${Math.floor(e.seconds/3600)}h ${Math.floor((e.seconds%3600)/60)}m</div>
-        <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
-      </div>
-    </div>
-  `).join('') : '<div style="padding:1rem;color:var(--muted);font-size:.8rem;">Noch keine Einträge heute.</div>';
-}
-
-function deleteEntry(id) {
-  entries = entries.filter(e=>e.id!==id);
-  saveEntries(entries);
-  renderToday();
-}
-
-// ── AUSWERTUNG ────────────────────────────────────────────────────
-function setAuswertung(f, btn) {
-  auswertungFilter = f;
-  document.querySelectorAll('#page-auswertung .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAuswertung();
-}
-
-function renderAuswertung() {
-  const now = new Date();
-  const today = now.toISOString().split('T')[0];
-  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1);
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-  let filtered = entries;
-  if(auswertungFilter==='today') filtered = entries.filter(e=>e.date===today);
-  else if(auswertungFilter==='week') filtered = entries.filter(e=>new Date(e.date)>=weekStart);
-  else if(auswertungFilter==='month') filtered = entries.filter(e=>new Date(e.date)>=monthStart);
-
-  // Stats per Kunde
-  const byKunde = {};
-  filtered.forEach(e => {
-    if(!byKunde[e.kunde]) byKunde[e.kunde]=0;
-    byKunde[e.kunde]+=e.seconds;
-  });
-  const total = filtered.reduce((s,e)=>s+e.seconds,0);
-
-  // Stats Grid
-  const topKunden = Object.entries(byKunde).sort((a,b)=>b[1]-a[1]).slice(0,4);
-  document.getElementById('auswertung-stats').innerHTML = `
-    <div class="stat stat-blue"><div class="stat-value">${Math.floor(total/3600)}h ${Math.floor((total%3600)/60)}m</div><div class="stat-label">Gesamt</div></div>
-    ${topKunden.map(([k,s])=>`<div class="stat" style="border-left:2px solid ${kundeAccent[k]||'#555'}"><div class="stat-value">${Math.floor(s/3600)}h ${Math.floor((s%3600)/60)}m</div><div class="stat-label">${k}</div></div>`).join('')}
-  `;
-
-  // Tabelle
-  document.getElementById('auswertung-table').innerHTML = filtered.length ?
-    filtered.map(e=>`
-      <tr>
-        <td>${e.date}</td>
-        <td><span style="color:${kundeAccent[e.kunde]||'#555'}">${e.kunde}</span></td>
-        <td>${e.task}</td>
-        <td>${Math.floor(e.seconds/3600)}h ${Math.floor((e.seconds%3600)/60)}m</td>
-        <td style="color:var(--muted)">${e.note||'—'}</td>
-        <td><button class="btn btn-danger" onclick="deleteEntryAuswertung(${e.id})" style="padding:.2rem .5rem">✕</button></td>
-      </tr>
-    `).join('') : '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem;">Keine Einträge.</td></tr>';
-}
-
-function deleteEntryAuswertung(id) {
-  entries = entries.filter(e=>e.id!==id);
-  saveEntries(entries);
-  renderAuswertung();
-}
-
-// ── INIT ──────────────────────────────────────────────────────────
+// Init
 renderTodos();
-document.getElementById('man-date').value = new Date().toISOString().split('T')[0];
+document.getElementById('man-date').value=new Date().toISOString().split('T')[0];
 renderToday();
 </script>
 </body>
