@@ -230,7 +230,7 @@ input,select,textarea,button{font-family:var(--font);}
 
 <script>
 const S_TODOS='ec_todos_v3', S_ENTRIES='ec_entries_v2';
-function load(k,def){try{return JSON.parse(localStorage.getItem(k))||def;}catch(e){return def;}}
+function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch(e){localStorage.removeItem(k);return def;}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
 const defaultTodos = [
